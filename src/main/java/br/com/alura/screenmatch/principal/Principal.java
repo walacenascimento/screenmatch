@@ -1,5 +1,6 @@
 package br.com.alura.screenmatch.principal;
 
+import br.com.alura.screenmatch.model.DadosEpisodio;
 import br.com.alura.screenmatch.model.DadosSerie;
 import br.com.alura.screenmatch.model.DadosTemporada;
 import br.com.alura.screenmatch.services.ConsumoApi;
@@ -34,9 +35,21 @@ public class Principal {
 			DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
 			temporadas.add(dadosTemporada);
 		}
-
         // percorrendo toda a lista e imprimindo o resultado
 		temporadas.forEach(System.out::println);
+
+        // Percorrendo a lista de temporadas e episodios e imprimindo os episódios
+//        for(int i= 0; i < dados.totalTemporadas(); i++){
+//            List<DadosEpisodio> episodiosTemporada = temporadas.get(i).episodios();
+//            for (int j = 0; j < episodiosTemporada.size(); j++){
+//                System.out.println(episodiosTemporada.get(j).titulo());
+//            }
+//        }
+
+        /* Percorrendo a lista de temporadas e episodios e imprimindo os episódios de forma
+        mais simples com lambdas
+         */
+        temporadas.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())));
 
     }
 }
