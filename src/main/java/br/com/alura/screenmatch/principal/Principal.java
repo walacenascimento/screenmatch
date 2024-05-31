@@ -6,7 +6,9 @@ import br.com.alura.screenmatch.model.DadosTemporada;
 import br.com.alura.screenmatch.services.ConsumoApi;
 import br.com.alura.screenmatch.services.ConverteDados;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,7 +21,7 @@ public class Principal {
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API_KEY = "&apikey=e465ef95";
 
-    public void exibeMenu(){
+    public void exibeMenu() {
         System.out.println("Digite o nome da serie para busca ");
         var nomeSerie = leitura.nextLine();
         var json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
@@ -27,16 +29,16 @@ public class Principal {
         System.out.println(dados);
 
         // Criando uma lista para adicionar as temporadas
-		List<DadosTemporada> temporadas = new ArrayList<>();
+        List<DadosTemporada> temporadas = new ArrayList<>();
 
-		// Percorrendo todas as temporadas com laço FOR
-		for (int i = 1; i <= dados.totalTemporadas() ; i++) {
-			json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") +"&season=" + i + API_KEY);
-			DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
-			temporadas.add(dadosTemporada);
-		}
+        // Percorrendo todas as temporadas com laço FOR
+        for (int i = 1; i <= dados.totalTemporadas(); i++) {
+            json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + "&season=" + i + API_KEY);
+            DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
+            temporadas.add(dadosTemporada);
+        }
         // percorrendo toda a lista e imprimindo o resultado
-		temporadas.forEach(System.out::println);
+        temporadas.forEach(System.out::println);
 
         // Percorrendo a lista de temporadas e episodios e imprimindo os episódios
 //        for(int i= 0; i < dados.totalTemporadas(); i++){
@@ -50,6 +52,18 @@ public class Principal {
         mais simples com lambdas
          */
         temporadas.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())));
+
+        // Trabalhando com o stream - exemplo
+        List<String> nomes = Arrays.asList("jaque", "Iasmin", "Paulo", "Nico");
+        // chamando o stream, ordenando a lista, limitando, percorrendo e imprimindo.
+        nomes.stream()
+                .sorted()
+                .limit(3)
+                .filter(n->n.startsWith("N"))
+                .map(n-> n.toUpperCase())
+                .forEach(System.out::println);
+        // O reultado será a impressão do nome "NICO"
+
 
     }
 }
