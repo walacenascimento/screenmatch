@@ -7,10 +7,8 @@ import br.com.alura.screenmatch.services.ConsumoApi;
 import br.com.alura.screenmatch.services.ConverteDados;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -53,17 +51,27 @@ public class Principal {
          */
         temporadas.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())));
 
-        // Trabalhando com o stream - exemplo
-        List<String> nomes = Arrays.asList("jaque", "Iasmin", "Paulo", "Nico");
-        // chamando o stream, ordenando a lista, limitando, percorrendo e imprimindo.
-        nomes.stream()
-                .sorted()
-                .limit(3)
-                .filter(n->n.startsWith("N"))
-                .map(n-> n.toUpperCase())
+//        // Trabalhando com o stream - exemplo
+//        List<String> nomes = Arrays.asList("jaque", "Iasmin", "Paulo", "Nico");
+//        // chamando o stream, ordenando a lista, limitando, percorrendo e imprimindo.
+//        nomes.stream()
+//                .sorted()
+//                .limit(3)
+//                .filter(n->n.startsWith("N"))
+//                .map(n-> n.toUpperCase())
+//                .forEach(System.out::println);
+//        // O reultado será a impressão do nome "NICO"
+
+        // buscando o TOP 5 Episódios buscando pela avaliação
+        List<DadosEpisodio> dadosEpisodios = temporadas.stream()
+                .flatMap(t-> t.episodios().stream())
+                .collect(Collectors.toList());
+
+        System.out.println("\n TOP 5 EPISÓDIOS");
+        dadosEpisodios.stream()
+                .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
+                .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
+                .limit(5)
                 .forEach(System.out::println);
-        // O reultado será a impressão do nome "NICO"
-
-
     }
 }
