@@ -7,10 +7,12 @@ import br.com.alura.screenmatch.model.Episodio;
 import br.com.alura.screenmatch.services.ConsumoApi;
 import br.com.alura.screenmatch.services.ConverteDados;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Principal {
@@ -70,6 +72,7 @@ public class Principal {
                 .flatMap(t-> t.episodios().stream())
                 .collect(Collectors.toList());
 
+
         System.out.println("\n TOP 5 EPISÓDIOS");
         dadosEpisodios.stream()
                 .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
@@ -77,14 +80,15 @@ public class Principal {
                 .limit(5)
                 .forEach(System.out::println);
 
+        // Filtrando e ordenando episódios
         List<Episodio> episodios = temporadas.stream()
                 .flatMap(t -> t.episodios().stream()
-                        .map(d -> new Episodio(t.numero(), d))
-                ).collect(Collectors.toList());
+                        .map(d -> new Episodio(t.numero(), d)))
+                .collect(Collectors.toList());
 
         episodios.forEach(System.out::println);
 
-        // filtrando os episódios por data
+//        // filtrando os episódios por data
         System.out.println("A partir de que ano você deseja ver os episódios? ");
         var ano = leitura.nextInt();
         leitura.nextLine();
